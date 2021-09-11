@@ -9,14 +9,12 @@ contract DocHashGenerator  {
         uint timestamp;
     }
     
-    address public creator;
     uint public numDocs;
     
     mapping(string => Document) public documentHashMap;
-    mapping (address =>string ) message;
+  
 
     constructor()  {
-        creator = msg.sender;
         numDocs = 0;
     }
     
@@ -47,9 +45,9 @@ contract DocHashGenerator  {
     function getNumDocs() public view returns (uint ) {
         return numDocs;
     }
-  function transferOwnership(address _recipient, string memory hash) public{
+ function transferOwnership(address _recipient, string memory hash) public{
        Document storage doc = documentHashMap[hash];
-       message[_recipient] = hash;
+	require(doc.owner == msg.sender,"Only owner has the privileges");
         doc.owner = _recipient;
 
   }
